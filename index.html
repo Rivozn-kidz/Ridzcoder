@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ridz Coder - Portfolio</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://files.catbox.moe/jv9mfs.png" type="image/png">
+    <link rel="shortcut icon" href="https://files.catbox.moe/jv9mfs.png" type="image/png">
+
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="Ridz Coder - Portfolio" />
+    <meta property="og:description" content="Developer & Designer • Code. Create. Elevate." />
+    <meta property="og:image" content="https://files.catbox.moe/jv9mfs.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ridzcoder.github.io/" /> <!-- ← change if you have real domain -->
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ridz Coder - Portfolio" />
+    <meta name="twitter:description" content="Developer & Designer • Code. Create. Elevate." />
+    <meta name="twitter:image" content="https://files.catbox.moe/jv9mfs.png" />
+
+    <meta name="description" content="Ridz Coder - Portfolio - Developer & Designer" />
+    <meta name="author" content="Ridz Coder" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #0f0f0f;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --accent-color: #ff1744;
+            --accent-glow: rgba(255, 23, 68, 0.35);
+            --border-color: rgba(255,255,255,0.09);
+            --menu-bg: rgba(20,20,20,0.96);
+            --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 70px 16px 40px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 460px;
+            margin: 0 auto;
+        }
+
+        /* ─── Menu Button & Panel ─── */
+        .menu-button {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: var(--transition);
+        }
+
+        .menu-button:hover {
+            background: rgba(255,23,68,0.14);
+            border-color: var(--accent-color);
+            transform: scale(1.06);
+        }
+
+        .menu-line {
+            width: 20px;
+            height: 2.4px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .menu-button.active .menu-line:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .menu-button.active .menu-line:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-button.active .menu-line:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .menu-panel {
+            position: fixed;
+            top: 0; right: -280px;
+            width: 260px;
+            height: 100%;
+            background: var(--menu-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-left: 1px solid var(--border-color);
+            padding: 70px 20px 30px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 999;
+            overflow-y: auto;
+        }
+
+        .menu-panel.active {
+            right: 0;
+        }
+
+        .menu-item {
+            display: block;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 14px 16px;
+            margin: 6px 0;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .menu-item:hover {
+            background: rgba(255,23,68,0.11);
+            transform: translateX(6px);
+        }
+
+        .menu-item-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 3px;
+        }
+
+        .menu-item-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ─── Profile Section ─── */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 24px;
+        }
+
+         .profile-image {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            border: 4px solid var(--bg-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .glow-ring {
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff1744, #ff5252, #ff1744);
+            padding: 3px;
+            animation: pulseGlow 3s ease-in-out infinite, colorShift 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes pulseGlow {
+            0%,100% { transform: scale(1); opacity: 0.85; filter: blur(0px); }
+            50% { transform: scale(1.03); opacity: 1; filter: blur(1px); }
+        }
+        @keyframes colorShift {
+            0%,100% { background: linear-gradient(135deg, #ff1744, #ff5252, #ff1744); }
+            14% { background: linear-gradient(135deg, #f50057, #ff4081, #ff1744); }
+            28% { background: linear-gradient(135deg, #e91e63, #ff1744, #ff5252); }
+            42% { background: linear-gradient(135deg, #ff4081, #f50057, #e91e63); }
+            57% { background: linear-gradient(135deg, #667eea, #764ba2, #f093fb); }
+            71% { background: linear-gradient(135deg, #4facfe, #00f2fe, #43e97b); }
+            85% { background: linear-gradient(135deg, #43e97b, #38f9d7, #667eea); }
+        }
+
+        .profile-name {
+            font-size: 2.1rem;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            margin-bottom: 8px;
+        }
+
+        .profile-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .beta-label {
+            font-size: 0.68rem;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .profile-quote {
+            font-size: 0.92rem;
+            color: #ccc;
+            font-weight: 400;
+            min-height: 1.4em;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent-color);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1.1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* ─── Social Icons ─── */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            margin: 40px 0 50px;
+        }
+
+        .social-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--accent-color);
+            transform: translateY(-4px) scale(1.12);
+            box-shadow: 0 8px 25px var(--accent-glow);
+        }
+
+        .social-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* ─── Stats ─── */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.7rem;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+
+        /* ─── Time & Battery ─── */
+        .time-battery-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .ug-time-display {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .time-label {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .battery-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .battery-icon {
+            position: relative;
+            width: 28px;
+            height: 14px;
+            border: 2px solid #aaa;
+            border-radius: 4px;
+            padding: 2px;
+        }
+
+        .battery-icon::after {
+            content: "";
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 8px;
+            background: #aaa;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .battery-fill {
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+
+        .battery-fill.low  { background: linear-gradient(90deg, #f87171, #fca5a5); }
+        .battery-fill.medium { background: linear-gradient(90deg, #fbbf24, #fde047); }
+
+        .battery-percentage {
+            font-size: 0.9rem;
+            font-weight: 700;
+            min-width: 44px;
+        }
+
+        /* Footer */
+        .footer-text {
+            text-align: center;
+            font-size: 0.82rem;
+            color: #777;
+        }
+
+        @media (max-width: 480px) {
+            .stats { gap: 40px; }
+            .profile-name { font-size: 1.9rem; }
+            .menu-button { top: 12px; right: 12px; }
+            .menu-panel { width: 240px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+        .bio-section {
+    background: rgba(255, 23, 68, 0.05);
+    border: 1px solid rgba(255, 23, 68, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.bio-section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--accent-color);
+}
+
+.bio-section p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://files.catbox.moe/ohqbir.mp3" type="audio/mpeg">
+</audio>
+
+<button class="menu-button" id="menuButton" aria-label="Open menu">
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+</button>
+
+<div class="menu-panel" id="menuPanel"></div>
+
+<div class="container">
+
+    <div class="profile-section">
+        <div class="profile-image-wrapper">
+            <div class="glow-ring"></div>
+            <img src="https://files.catbox.moe/jv9mfs.png" alt="Ridz Coder" class="profile-image">
+        </div>
+
+        <h1 class="profile-name">Ridz Coder</h1>
+        <div class="profile-subtitle">MY PORTFOLIO</div>
+        <div class="beta-label">beta</div>
+<div class="bio-section">
+    <h2>About Me</h2>
+    <p id="bioText">
+        <span id="bioTyping"></span><span class="typing-cursor">|</span>
+    </p>
+</div>
+       
+
+        <div class="social-icons" id="socialIcons"></div>
+    </div>
+
+    <div class="stats" id="statsContainer"></div>
+
+    <div class="time-battery-section">
+        <div class="ug-time-display" id="ugTime">--:--:--</div>
+        <div class="time-label">Kampala (EAT / GMT+3)</div>
+
+        <div class="battery-container">
+            <div class="battery-icon">
+                <div class="battery-fill" id="batteryFill"></div>
+            </div>
+            <div class="battery-percentage" id="batteryPercentage">— %</div>
+        </div>
+    </div>
+
+    <div class="footer">
+    <p class="footer-text">©2023 - <span id="year"></span> • Developed by Ridz Coder</p>    </div>
+
+</div>
+
+<script>
+// Auto year update
+document.getElementById("year").textContent = new Date().getFullYear();
+// ────────────────────────────────────────────────
+(function(){
+"use strict";
+
+const audio = document.getElementById('bgMusic');
+if (audio) {
+    audio.volume = 0.25;
+    audio.play().catch(()=>{});
+}
+
+// ─── Data ────────────────────────────────────────
+
+const bioLines = [
+    "I’m Ridz Coder, a Student who lost his teacher and a kind who lost her queen and also a passionate developer and designer.",
+    "From Uganda I specialize in building interactive web experiences, tools, and apps.",
+    "I enjoy learning new technologies and turning ideas into code."
+];
+const socials = [
+    { 
+        url: "https://facebook.com/ridzcoder", 
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>` 
+    },
+    { 
+        url: "https://github.com/ridzcoder",   
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.49.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.8 1.37 2.1.97 2.62.74.08-.58.3-1 .55-1.23-2-.23-4.1-1-4.1-4.45 0-.98.35-1.79.93-2.42-.1-.25-.4-1.18.08-2.46 0 0 .76-.24 2.5.93A8.8 8.8 0 0 1 12 6.8c.85.004 1.71.11 2.5.33 1.74-1.17 2.5-.93 2.5-.93.48 1.28.18 2.21.09 2.46.58.63.93 1.44.93 2.42 0 3.46-2.1 4.22-4.11 4.45.32.28.61.83.61 1.67v2.48c0 .26.18.57.69.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/></svg>` 
+    },
+    { 
+        url: "https://instagram.com/ridzcoder", 
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.054 1.964.24 2.423.403a4.92 4.92 0 0 1 1.77 1.02 4.922 4.922 0 0 1 1.02 1.77c.163.458.35 1.252.403 2.422.058 1.266.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.964-.403 2.423a4.92 4.92 0 0 1-1.02 1.77 4.922 4.922 0 0 1-1.77 1.02c-.458.163-1.252.35-2.422.403-1.266.058-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.964-.24-2.423-.403a4.923 4.923 0 0 1-1.77-1.02 4.92 4.92 0 0 1-1.02-1.77c-.163-.458-.35-1.252-.403-2.422C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.054-1.17.24-1.964.403-2.423a4.92 4.92 0 0 1 1.02-1.77 4.923 4.923 0 0 1 1.77-1.02c.458-.163 1.252-.35 2.422-.403C8.416 2.212 8.8 2.2 12 2.2zm0-2.2C8.735 0 8.332.013 7.052.072 5.77.131 4.678.345 3.78.673a7.125 7.125 0 0 0-2.57 1.64A7.125 7.125 0 0 0 .673 4.78c-.328.898-.542 1.99-.601 3.272C.013 8.332 0 8.735 0 12c0 3.265.013 3.668.072 4.948.059 1.282.273 2.374.601 3.272a7.125 7.125 0 0 0 1.64 2.57 7.125 7.125 0 0 0 2.57 1.64c.898.328 1.99.542 3.272.601C8.332 23.987 8.735 24 12 24s3.668-.013 4.948-.072c1.282-.059 2.374-.273 3.272-.601a7.125 7.125 0 0 0 2.57-1.64 7.125 7.125 0 0 0 1.64-2.57c.328-.898.542-1.99.601-3.272.059-1.28.072-1.683.072-4.948s-.013-3.668-.072-4.948c-.059-1.282-.273-2.374-.601-3.272a7.125 7.125 0 0 0-1.64-2.57 7.125 7.125 0 0 0-2.57-1.64c-.898-.328-1.99-.542-3.272-.601C15.668.013 15.265 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a3.999 3.999 0 1 1 0-7.998 3.999 3.999 0 0 1 0 7.998zm6.406-11.845a1.44 1.44 0 1 1-2.879 0 1.44 1.44 0 0 1 2.879 0z"/></svg>`
+    },
+    { 
+        url: "https://x.com/ridzcoder", 
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.95.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124-4.087-.205-7.713-2.163-10.14-5.144-.423.722-.666 1.561-.666 2.457 0 1.694.863 3.19 2.175 4.066-.803-.026-1.56-.247-2.22-.616v.062c0 2.368 1.684 4.342 3.918 4.788-.41.111-.843.171-1.287.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.414-1.68 1.317-3.809 2.103-6.102 2.103-.395 0-.779-.023-1.158-.068 2.179 1.397 4.768 2.213 7.557 2.213 9.054 0 14-7.496 14-13.986 0-.21 0-.423-.015-.634.961-.695 1.8-1.562 2.46-2.549l-.047-.02z"/></svg>`
+    },
+    { 
+        url: "https://wa.me/237678687593", 
+        icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.478a11.918 11.918 0 0 0-16.839 0c-4.684 4.684-5.061 12.09-.981 16.875L2 22l3.769-1.7a11.92 11.92 0 0 0 16.751-16.822zm-8.52 15.522c-2.647 0-5.23-.892-7.3-2.523l-.522-.39-2.514.994.99-2.468-.34-.528a9.926 9.926 0 1 1 10.686 5.014zM16.105 14.46c-.264-.132-1.562-.771-1.805-.86-.242-.09-.418-.132-.593.133-.175.264-.677.86-.83 1.038-.152.177-.304.198-.568.066-.264-.132-1.115-.409-2.124-1.31-.786-.7-1.314-1.56-1.468-1.824-.152-.264-.016-.406.116-.538.12-.12.264-.304.396-.456.132-.152.176-.264.264-.44.088-.176.044-.33-.022-.462-.066-.132-.593-1.428-.813-1.953-.213-.514-.43-.444-.593-.453l-.508-.009c-.176 0-.462.066-.704.33-.242.264-.923.9-.923 2.19 0 1.29.945 2.538 1.076 2.716.132.177 1.857 2.836 4.5 3.97 2.643 1.134 2.643.756 3.112.708.47-.048 1.528-.624 1.744-1.225.216-.6.216-1.113.152-1.225-.066-.112-.242-.177-.506-.308z"/></svg>`
+    }
+];
+
+const stats = [
+    { label: "PROJECTS", value: "14" },
+    { label: "CONTRIBUTIONS", value: "53" },
+    { label: "CLIENTS", value: "9" }
+];
+
+const tools = [
+    { title: "NEBULA MD",    desc: "Multi Whatsapp User Bot",           href: "https://github.com/ridzcoder/NEBULA-MD" },
+    { title: "NEMESIS MD",    desc: "Little Multi user bot for Whatsapp",           href: "https://github.com/ridzcoder/NEMESIS-MD" },
+    { title: "STREAM KAYIZA",    desc: "A platform to download and watch movies for free",           href: "https://streammkayiza.zone.id" },
+    { title: "KAYIZA APIS",     desc: "Download any Content",  href: "https://kayiza-apis.zone.id" }
+];
+
+// ─── Functions ───────────────────────────────────
+function renderSocialIcons() {
+    document.getElementById('socialIcons').innerHTML = socials
+        .map(s => `
+            <a href="${s.url}" target="_blank" rel="noopener" class="social-icon">
+                ${s.icon}
+            </a>
+        `)
+        .join('');
+}
+function renderStats() {
+    document.getElementById('statsContainer').innerHTML = stats
+        .map((s, idx) => `
+            <div class="stat-item">
+                <div class="stat-value" id="stat-${idx}">0</div>
+                <div class="stat-label">${s.label}</div>
+            </div>
+        `)
+        .join('');
+}
+function animateStats() {
+    stats.forEach((s, idx) => {
+        const el = document.getElementById(`stat-${idx}`);
+        const target = parseInt(s.value, 10);
+        let count = 0;
+        const speed = Math.max(20, 2000 / target); // adjust speed
+
+        const timer = setInterval(() => {
+            count++;
+            el.textContent = count;
+            if (count >= target) {
+                el.textContent = target;
+                clearInterval(timer);
+            }
+        }, speed);
+    });
+}
+function renderMenu() {
+    document.getElementById('menuPanel').innerHTML = tools
+        .map(t => `
+            <a href="${t.href}" class="menu-item">
+                <div class="menu-item-title">${t.title}</div>
+                <div class="menu-item-desc">${t.desc}</div>
+            </a>
+        `)
+        .join('');
+}
+function typeBio() {
+    const el = document.getElementById('bioTyping');
+    let i = 0, char = 0, current = "";
+
+    function type() {
+        if (char < bioLines[i].length) {
+            current += bioLines[i][char++];
+            el.textContent = current;
+            setTimeout(type, 50 + Math.random() * 50);
+        } else {
+            setTimeout(() => {
+                if (++i >= bioLines.length) i = 0;
+                current = "";
+                char = 0;
+                el.textContent = "";
+                type();
+            }, 2000);
+        }
+    }
+
+    type();
+}
+
+
+
+function updateUgandaTime() {
+    const el = document.getElementById('ugTime');
+    const now = new Date().toLocaleTimeString("en-GB", {
+        timeZone: "Africa/Kampala",
+        hour12: false,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+    });
+    el.textContent = now;
+}
+
+async function updateBattery() {
+    if (!navigator.getBattery) {
+        document.getElementById('batteryPercentage').textContent = "—";
+        return;
+    }
+
+    try {
+        const bat = await navigator.getBattery();
+        const fill = document.getElementById('batteryFill');
+        const perc = document.getElementById('batteryPercentage');
+
+        const update = () => {
+            const lvl = Math.round(bat.level * 100);
+            fill.style.width = lvl + "%";
+            perc.textContent = lvl + "%";
+
+            fill.className = 'battery-fill';
+            if (lvl < 30) fill.classList.add('low');
+            else if (lvl < 65) fill.classList.add('medium');
+        };
+
+        update();
+        bat.addEventListener('levelchange', update);
+    } catch {}
+}
+
+// Menu toggle
+function initMenu() {
+    const btn = document.getElementById('menuButton');
+    const panel = document.getElementById('menuPanel');
+
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        btn.classList.toggle('active');
+        panel.classList.toggle('active');
+    });
+
+    document.addEventListener('click', e => {
+        if (!btn.contains(e.target) && !panel.contains(e.target)) {
+            btn.classList.remove('active');
+            panel.classList.remove('active');
+        }
+    });
+}
+
+// ─── Start ───────────────────────────────────────
+renderSocialIcons();
+renderStats();
+renderMenu();
+initMenu();
+typeBio();
+updateUgandaTime();
+setInterval(updateUgandaTime, 1000);
+animateStats();
+updateBattery();
+setInterval(updateBattery, 15000);
+
+})();
+</script>
+</body>
+</html>
